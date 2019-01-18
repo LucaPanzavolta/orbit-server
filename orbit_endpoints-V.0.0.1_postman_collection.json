@@ -1,0 +1,550 @@
+{
+	"info": {
+		"_postman_id": "879080f0-8d30-431a-bb9f-cd7603ee17b1",
+		"name": "Orbit - endpoints V.0.0.1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Category Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Test new Category 2\",\n\t\"metrics\": [\n      {\n        \"name\": \"frontend\",\n        \"attributes\": [\"html\", \"css\", \"react\",\"angular\"]\n      },\n      {\n        \"name\": \"backend\",\n        \"attributes\": [\"koa\", \"node\", \"databases\"]\n      },\n      {\n        \"name\": \"testing\",\n        \"attributes\": [\"chai\", \"jest\"]\n      }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{url}}/categories",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Categories Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/categories",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Category Get One",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/categories/5c40b742d9c7a82588d22952",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"categories",
+								"5c40b742d9c7a82588d22952"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "User Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Cameron\",\n  \"email\": \"cameron@hotmail.com\",\n  \"password\": \"Cameron123\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/sign-up",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sign-up"
+							]
+						},
+						"description": "Create an editor"
+					},
+					"response": []
+				},
+				{
+					"name": "User Log In",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/log-in",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"log-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Remove",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/remove",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"remove"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Workspace",
+			"item": [
+				{
+					"name": "Workspace Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"June Batch\",\n  \"category\": \"CodeWars\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/dashboard",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Workspaces Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/dashboard",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Workspace Remove",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/dashboard/5ab14719dc742f093159be75",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dashboard",
+								"5ab14719dc742f093159be75"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Entries   db.entries",
+			"item": [
+				{
+					"name": "Entries Get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/dashboard/5ab11c36de3a7804125c7bf4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dashboard",
+								"5ab11c36de3a7804125c7bf4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Entry Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "9af10a80-2c64-11e8-b072-b39fabc3bdac",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Tom Moore\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/dashboard/5ab1468a9855fe091c5d304d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dashboard",
+								"5ab1468a9855fe091c5d304d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Entry Remove",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/dashboard/5ab1468a9855fe091c5d304d/5ab14876dc742f093159be7b",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"dashboard",
+								"5ab1468a9855fe091c5d304d",
+								"5ab14876dc742f093159be7b"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b4dc70d2-f5cb-4131-b928-5b8755d88e54",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0ad23994-5233-4597-bdad-a601cee18688",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Snapshot Create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "9af10a80-2c64-11e8-b072-b39fabc3bdac",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\": \"SNAAAAAP1\",\n    \"comments\": \"comment to the first snapshot\",\n    \"metrics\": [[1,2],[3,4]]\n}"
+				},
+				"url": {
+					"raw": "{{url}}/dashboard/5ab1468a9855fe091c5d304d/5ab14876dc742f093159be7b",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"dashboard",
+						"5ab1468a9855fe091c5d304d",
+						"5ab14876dc742f093159be7b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Neural Snapshot",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/dashboard/5ab51e350eba7d00205a78c4/5ab51e5b0eba7d00205a78c6",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"dashboard",
+						"5ab51e350eba7d00205a78c4",
+						"5ab51e5b0eba7d00205a78c6"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "7f671e74-41d5-486c-b7c5-73947bedc184",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "15f9e7f5-0aa2-4339-b2aa-fa047f88c45c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "be3f806f-ac2e-472d-846e-a0f32122bc51",
+			"key": "url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"id": "333aaf52-5268-4c0f-a9c0-3f39b4b5aa4d",
+			"key": "token",
+			"value": "f28c4560-1a6c-11e9-9081-174d812cdb6f",
+			"type": "string"
+		}
+	]
+}
