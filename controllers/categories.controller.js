@@ -1,17 +1,15 @@
 'use strict';
 
-// const Category = require('../models/category.model');
-
 class CategoriesController {
   constructor(CategoryModel) {
     this.CategoryModel = CategoryModel;
-    this.getAllCategory = this.getAllCategory.bind(this);
+    this.getAllCategories = this.getAllCategories.bind(this);
     this.getCategory = this.getCategory.bind(this);
     this.addCategory = this.addCategory.bind(this);
   }
 
   // Get all Categories
-  async getAllCategory (ctx, next) {
+  async getAllCategories (ctx, next) {
     if ('GET' != ctx.method) return await next();
     const categories = await this.CategoryModel.find();
     ctx.status = 200;

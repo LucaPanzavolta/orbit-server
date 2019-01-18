@@ -32,7 +32,7 @@ const routes = function (app) {
   router.delete('/remove', authorize, usersController.removeUser);
 
   // Categories
-  router.get('/categories', authorize, categoriesController.getAllCategory);
+  router.get('/categories', authorize, categoriesController.getAllCategories);
   router.get('/categories/:id', authorize, categoriesController.getCategory);
   router.post('/categories', authorize, categoriesController.addCategory);
 
