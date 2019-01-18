@@ -23,7 +23,7 @@ class CategoriesController {
     if ('GET' != ctx.method) return await next();
     const category = await this.CategoryModel.findOne({'_id': ctx.params.id});
     if (!category) {
-      // throw new Errror
+      // throw new Error
       ctx.status = 401;
       ctx.body = {
         errors:[
@@ -49,31 +49,30 @@ class CategoriesController {
     return await next();
   }
 
-  const categoryExists = await this.CategoryModel.findOne({ name: ctx.request.body.name });
-  if (categoryExists) {
-    ctx.status = 400;
-    ctx.body = {
-      errors: [
-        'this. name already exists.'
-      ]
-    };
-    return await next();
-  }
+    const categoryExists = await this.CategoryModel.findOne({ name: ctx.request.body.name });
+    if (categoryExists) {
+      ctx.status = 400;
+      ctx.body = {
+        errors: [
+          'this. name already exists.'
+        ]
+      };
+      return await next();
+    }
     
     const category = await this.CategoryModel.create({
       name: ctx.request.body.name,
       attributesAmount: attributesAmount(ctx.request.body.metrics),
       metrics: ctx.request.body.metrics
     });
-    ctx.status = 201;
-    ctx.body = category;
+      ctx.status = 201;
+      ctx.body = category;
   }
 
 };
 
 const attributesAmount = function (metrics) {
-  const result = [];
-  metrics.forEach(el => result.push(el.attributes.length));
+  const result = metrics.map(el => el.attributes.length);
   return result;
 }
 
