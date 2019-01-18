@@ -38,6 +38,7 @@ app.use(async (ctx, next) => {
   }
 });
 
+// Checks if  Bearer Auth, and query DB if the user with that token exists - Refactor
 app.use(async (ctx, next) => {
   if(!ctx.headers['authorization']) return await next();
   let token = ctx.headers['authorization'].split(' ').pop();
