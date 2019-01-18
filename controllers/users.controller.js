@@ -65,13 +65,13 @@ module.exports.logIn = async (ctx, next) => {
   if ('GET' != ctx.method) return await next();
 
   // extracts Auth header - email and password
-  const [authType, encodedString ] = ctx.header['authorization'].split(' ');
+  const [authType, encodedString ] = ctx.headers.authorization.split(' ');
   if (authType === 'Basic') {
     let [email, password] = atob(encodedString).split(':');
 
     let userExists = ctx.user = await User.findOne({email});
+    
     if (userExists) {
-
       const passwordValid = await bcrypt.compare(password, ctx.user.password);
       if (passwordValid) {
 
