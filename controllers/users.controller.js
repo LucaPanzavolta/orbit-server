@@ -11,6 +11,7 @@ const User = require('../models/user.model');
 
 // Create a new User
 module.exports.create = async (ctx, next) => {
+  console.log('XXX',ctx.request.method);
   if ('POST' != ctx.method) return await next();
   const userData = ctx.request.body;
   if (!userData.email || !userData.password || !userData.name) {

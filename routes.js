@@ -1,10 +1,19 @@
 'use strict';
 
+const db = require('./models/index').db;
+const CategoriesController = require('./controllers/categories.controller');
+
+const categoriesController = new CategoriesController(db.Category);
+
 const usersController = require('./controllers/users.controller');
 const workspacesController = require('./controllers/workspaces.controller');
-const categoriesController = require('./controllers/categories.controller');
 const entriesController = require('./controllers/entries.controller');
 const snapshotsController = require('./controllers/snapshots.controller');
+
+// console.log('ROUTER Categories controller', CategoriesController);
+// console.log('ROUTER DB User', db.User);
+// console.log('ROUTER DB Entry', db.Entry);
+
 
 const router = require('koa-router')();
 
