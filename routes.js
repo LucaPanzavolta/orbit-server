@@ -1,5 +1,6 @@
 'use strict';
 
+const authorize = require('./middlewares/authorize.js')
 const db = require('./models/index').db;
 const CategoriesController = require('./controllers/categories.controller');
 
@@ -10,20 +11,7 @@ const workspacesController = require('./controllers/workspaces.controller');
 const entriesController = require('./controllers/entries.controller');
 const snapshotsController = require('./controllers/snapshots.controller');
 
-// console.log('ROUTER Categories controller', CategoriesController);
-// console.log('ROUTER DB User', db.User);
-// console.log('ROUTER DB Entry', db.Entry);
-
-
 const router = require('koa-router')();
-
-const authorize = async (ctx, next) => {
-  if (!ctx.user) {
-    ctx.status = 401;
-    return;
-  }
-  await next();
-};
 
 const routes = function (app) {
   // User
@@ -32,7 +20,7 @@ const routes = function (app) {
   router.delete('/remove', authorize, usersController.removeUser);
 
   // Categories
-  router.get('/categories', authorize, categoriesController.getAllCategory);
+  router.get('/categories', authorize, categoriesController.getAllCategories);
   router.get('/categories/:id', authorize, categoriesController.getCategory);
   router.post('/categories', authorize, categoriesController.addCategory);
 
