@@ -39,11 +39,11 @@ class CategoriesController {
   // Add a new Category
   async addCategory (ctx, next) {
     if ('POST' != ctx.method) return await next();
-    if (!ctx.request.body.name || !ctx.request.body.enablers) {
+    if (!ctx.request.body.name || !ctx.request.body.metrics) {
       ctx.status = 400;
       ctx.body = {
       errors: [
-        'Category name and enablers fields cannot be empty.'
+        'Category name and metrics fields cannot be empty.'
       ]
     };
     return await next();
@@ -62,8 +62,8 @@ class CategoriesController {
     
     const category = await this.CategoryModel.create({
       name: ctx.request.body.name,
-      attributesAmount: attributesAmount(ctx.request.body.enablers),
-      enablers: ctx.request.body.enablers
+      attributesAmount: attributesAmount(ctx.request.body.metrics),
+      metrics: ctx.request.body.metrics
     });
     ctx.status = 201;
     ctx.body = category;
@@ -71,9 +71,9 @@ class CategoriesController {
 
 };
 
-const attributesAmount = function (enablers) {
+const attributesAmount = function (metrics) {
   const result = [];
-  enablers.forEach(el => result.push(el.attributes.length));
+  metrics.forEach(el => result.push(el.attributes.length));
   return result;
 }
 
