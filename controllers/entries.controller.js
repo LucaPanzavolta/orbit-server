@@ -4,27 +4,36 @@ const User = require('../models/user.model');
 const Entry = require('../models/entry.model');
 
 // Get all Entries
-module.exports.listEntries = async (ctx, next) => {
+module.exports.listEntriesByWorkspace = async (ctx, next) => {
+  //redundant
   if ('GET' != ctx.method) return await next();
-  const user = await User.findOne({'_id': ctx.user._id});
-  const targetWorkspace = await user.workspaces.filter( el => el._id == ctx.params.id);
+
+
+  /*   const user = await User.findOne({'_id': ctx.user._id});
+   */
+  const user = ctx.user;
+  const targetWorkspace = await user.workspaces.filter(el => el._id == ctx.params.id);
   if (targetWorkspace.length == 0) {
     ctx.status = 404;
     ctx.body = {
-      errors:[
+      errors: [
         'Workspace not found!'
       ]
     };
     return await next();
   }
-  let allEntries = [];
   let current;
-  for (let x = 0; x < targetWorkspace[0].entries.length; x++) {
-    current = await Entry.findOne({'_id': targetWorkspace[0].entries[x]})
-    current.snapshots.sort((a,b) => a.date - b.date);
-    await allEntries.push(current)
+
+  let allEntries = await Entry.find({ _id: { $in: targetWorkspace[0].entries } });
+  let sortedEntries = [];
+
+  for (let x = 0; x < allEntries.length; x++) {
+    current = allEntries[x];
+    current.snapshots.sort((a, b) => a.date - b.date);
+    sortedEntries.push(current);
   }
-  allEntries.sort((a,b) => {
+
+  sortedEntries.sort((a, b) => {
     const A = a.name.toUpperCase();
     const B = b.name.toUpperCase();
     if (A < B) return -1;
@@ -32,7 +41,7 @@ module.exports.listEntries = async (ctx, next) => {
     return 0;
   });
   ctx.status = 200;
-  ctx.body = allEntries;
+  ctx.body = sortedEntries;
 };
 
 // Adding a new Entry
@@ -41,14 +50,14 @@ module.exports.addEntry = async (ctx, next) => {
   if (!ctx.request.body.name) {
     ctx.status = 400;
     ctx.body = {
-      errors:[
+      errors: [
         'Name cannot be empty!'
       ]
     };
     return await next();
   }
-  const user = await User.findOne({'_id': ctx.user._id});
-  const targetWorkspace = await user.workspaces.filter( el => el._id == ctx.params.id);
+  const user = await User.findOne({ '_id': ctx.user._id });
+  const targetWorkspace = await user.workspaces.filter(el => el._id == ctx.params.id);
   const entry = await Entry.create({
     name: ctx.request.body.name,
     workspace: ctx.params.id
@@ -62,18 +71,18 @@ module.exports.addEntry = async (ctx, next) => {
 // Deleting an existing Entry
 module.exports.deleteEntry = async (ctx, next) => {
   if ('DELETE' != ctx.method) return await next();
-  const user = await User.findOne({'_id': ctx.user._id});
-  const targetWorkspace = await user.workspaces.filter( el => el._id == ctx.params.id);
+  const user = await User.findOne({ '_id': ctx.user._id });
+  const targetWorkspace = await user.workspaces.filter(el => el._id == ctx.params.id);
   if (targetWorkspace[0].entries.indexOf(ctx.params.entryId) === -1) {
     ctx.status = 404;
     ctx.body = {
-      errors:[
+      errors: [
         'No entry found!'
       ]
     };
     return await next();
   }
-  targetWorkspace[0].entries.splice(targetWorkspace[0].entries.indexOf(ctx.params.entryId),1);
+  targetWorkspace[0].entries.splice(targetWorkspace[0].entries.indexOf(ctx.params.entryId), 1);
   await user.save();
   ctx.status = 204;
 }

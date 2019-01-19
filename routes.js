@@ -31,8 +31,8 @@ const routes = function (app) {
   router.delete('/dashboard/:id', authorize, gate, workspacesController.deleteWorkspace);
 
   // Entries
-  router.get('/dashboard/:id/', authorize, gate, entriesController.listEntries);
-  router.post('/dashboard/:id/', authorize, gate, entriesController.addEntry);
+  router.get('/dashboard/:id/', authorize, gate, entriesController.listEntriesByWorkspace); //OK
+  router.post('/dashboard/:id/', authorize, gate, entriesController.addEntry); //OK
   router.delete('/dashboard/:id/:entryId', authorize, gate, entriesController.deleteEntry);
 
   // Snapshots
