@@ -90,7 +90,9 @@ module.exports.logIn = async (ctx, next) => {
         };
         return await next();
       }
-    } else {
+    }
+    //User does not exist
+     else {
       ctx.status = 401;
       ctx.body = {
         errors:[
@@ -99,7 +101,9 @@ module.exports.logIn = async (ctx, next) => {
       };
       return await next();
     }
-  } else {
+  } 
+  // Authentication type is not Basic
+  else {
     let token = encodedString;
     ctx.user = await User.findOne({token});
     if(ctx.user) {

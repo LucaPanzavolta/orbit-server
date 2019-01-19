@@ -1,11 +1,6 @@
 // CONNECTING TO mLab DATABASE
-<<<<<<< HEAD
 /* const mongoose = require('mongoose');
  */require('dotenv').config();
-=======
-require('dotenv').config();
-const mongoose = require('mongoose');
->>>>>>> 538fba332fb6b3d16e02db65e5e6a99659357a86
 
 /*
  * Mongoose by default sets the auto_reconnect option to true.
@@ -14,7 +9,6 @@ const mongoose = require('mongoose');
  * plenty of time in most operating environments.
  */
 
-<<<<<<< HEAD
 /* const options = {
   server: {
     socketOptions: {
@@ -39,9 +33,6 @@ mongoose.connect(mongodbUri, options)
   .catch(err => {
     console.log('Connection error', err);
   }) */
-=======
-// OPTIONS FOR CONNECTION TO mLab DATABASE
->>>>>>> 538fba332fb6b3d16e02db65e5e6a99659357a86
 
 // const options = {
 //   server: {
@@ -58,25 +49,9 @@ mongoose.connect(mongodbUri, options)
 //   }
 // };
 
-<<<<<<< HEAD
 // CONNECTING TO LOCAL DATABASE
 const mongoose = require('mongoose');
 
-=======
-// const mongodbUri = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
-
-// mongoose.connect(mongodbUri, options)
-//   .then(() => {
-//     console.log('Connected to Orbits database');
-//   })
-//   .catch(err => {
-//     console.log('Connection error', err);
-//   })
-
-
-
-// CONNECTING TO LOCAL DATABASE
->>>>>>> 538fba332fb6b3d16e02db65e5e6a99659357a86
 mongoose.connect('mongodb://localhost/orbit-database')
   .then(() => {
     console.log('Connected to Orbits database');
