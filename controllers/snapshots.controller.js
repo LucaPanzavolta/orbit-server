@@ -7,11 +7,11 @@ const Category = require('../models/category.model');
 // Add a new snapshot
 module.exports.addSnapshot = async (ctx, next) => {
   if ('POST' != ctx.method) return await next();
-  if (!ctx.request.body.date || !ctx.request.body.enablers) {
+  if (!ctx.request.body.date || !ctx.request.body.metrics) {
     ctx.status = 404;
     ctx.body = {
       errors:[
-        'Date and enablers are mandatory fields.'
+        'Date and metrics are mandatory fields.'
       ]
     };
     return await next();
@@ -24,7 +24,7 @@ module.exports.addSnapshot = async (ctx, next) => {
   const snapshot = {
     date: ctx.request.body.date,
     comments: ctx.request.body.comments || "",
-    enablers: ctx.request.body.enablers
+    metrics: ctx.request.body.metrics
   }
   await targetEntry.snapshots.push(snapshot)
   await targetEntry.save();

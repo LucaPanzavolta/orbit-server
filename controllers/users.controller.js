@@ -11,6 +11,7 @@ const User = require('../models/user.model');
 
 // Create a new User
 module.exports.create = async (ctx, next) => {
+  console.log('XXX',ctx.request.method);
   if ('POST' != ctx.method) return await next();
   const userData = ctx.request.body;
   if (!userData.email || !userData.password || !userData.name) {
@@ -60,21 +61,27 @@ module.exports.create = async (ctx, next) => {
 
 // Log in a User
 module.exports.logIn = async (ctx, next) => {
+  // Redundant - Checks if the method is GET ?
   if ('GET' != ctx.method) return await next();
-  const fullToken = ctx.header['authorization'].split(' ');
-  if (fullToken[0] === 'Basic') {
-    const encUser = fullToken[1];
-    let user = atob(encUser);
-    let [email, password] = user.split(':');
-    ctx.user = await User.findOne({email});
-    if(ctx.user) {
-      const same = await bcrypt.compare(password, ctx.user.password);
-      if(same) {
+
+  // extracts Auth header - email and password
+  const [authType, encodedString ] = ctx.headers.authorization.split(' ');
+  if (authType === 'Basic') {
+    let [email, password] = atob(encodedString).split(':');
+
+    let userExists = ctx.user = await User.findOne({email});
+    
+    if (userExists) {
+      const passwordValid = await bcrypt.compare(password, ctx.user.password);
+      if (passwordValid) {
+
         // Passwords match
         ctx.user.password ='********';
         ctx.status = 200;
         ctx.body = ctx.user;
-      } else {
+      } 
+      // Passwords DONT match
+      else {
         ctx.status = 401;
         ctx.body = {
           errors:[
@@ -93,7 +100,7 @@ module.exports.logIn = async (ctx, next) => {
       return await next();
     }
   } else {
-    let token = fullToken[1];
+    let token = encodedString;
     ctx.user = await User.findOne({token});
     if(ctx.user) {
       ctx.status = 200;

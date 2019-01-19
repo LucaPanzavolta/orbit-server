@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
   "homepage": "https://github.com/cjjenkinson/orbit-server#readme",
   "dependencies": {
     "atob": "^2.0.3",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^3.0.3",
     "dotenv": "^5.0.1",
     "kcors": "^2.2.1",
     "koa": "^2.5.0",
@@ -36,9 +36,11 @@
     "validator": "^9.4.1"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^4.10.0",
     "eslint-plugin-json": "^1.2.0",
-    "mocha": "^2.1.0",
+    "mocha": "^2.5.3",
+    "request": "^2.88.0",
     "supertest": "^2.0.0"
   },
   "engines": {

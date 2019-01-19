@@ -5,7 +5,6 @@ const koa = require('koa');
 const app = module.exports = new koa();
 const routes = require('./routes.js');
 
-const User = require('./models/user.model');
 require('./db');
 
 // Dependencies
@@ -36,16 +35,6 @@ app.use(async (ctx, next) => {
       ctx.app.emit('error', err, this);
     }
   }
-});
-
-app.use(async (ctx, next) => {
-  if(!ctx.headers['authorization']) return await next();
-  let token = ctx.headers['authorization'].split(' ').pop();
-
-  if (!token) return await next();
-  ctx.user = await User.findOne({token});
-
-  return await next();
 });
 
 routes(app);
