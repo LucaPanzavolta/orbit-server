@@ -49,3 +49,5 @@ if (!module.parent) {
   app.listen(port);
   console.log(`Orbits server running at http://${ip}:${port}`);
 }
+
+module.exports = app; // for testing
