@@ -1,6 +1,6 @@
 // CONNECTING TO mLab DATABASE
-const mongoose = require('mongoose');
-require('dotenv').config();
+/* const mongoose = require('mongoose');
+ */require('dotenv').config();
 
 /*
  * Mongoose by default sets the auto_reconnect option to true.
@@ -9,7 +9,7 @@ require('dotenv').config();
  * plenty of time in most operating environments.
  */
 
-const options = {
+/* const options = {
   server: {
     socketOptions: {
       keepAlive: 300000,
@@ -32,16 +32,16 @@ mongoose.connect(mongodbUri, options)
   })
   .catch(err => {
     console.log('Connection error', err);
-  })
+  }) */
 
 
 // CONNECTING TO LOCAL DATABASE
-// const mongoose = require('mongoose');
-//
-// mongoose.connect('mongodb://localhost/orbit-database')
-//   .then(() => {
-//     console.log('Connected to Orbits database');
-//   })
-//   .catch(err => {
-//     console.log('Cannot connect, wrong path');
-//   })
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/orbit-database')
+  .then(() => {
+    console.log('Connected to Orbits database');
+  })
+  .catch(err => {
+    console.log('Cannot connect, wrong path');
+  })
