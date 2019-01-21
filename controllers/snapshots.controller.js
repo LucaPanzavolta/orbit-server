@@ -21,11 +21,13 @@ module.exports.addSnapshot = async (ctx, next) => {
   const category = await Category.findById(categoryId);
 
   const targetEntry = await Entry.findOne({'_id': ctx.params.entryId});
+
   const snapshot = {
     date: ctx.request.body.date,
     comments: ctx.request.body.comments || "",
     metrics: ctx.request.body.metrics
   }
+  
   await targetEntry.snapshots.push(snapshot)
   await targetEntry.save();
   ctx.status = 201;

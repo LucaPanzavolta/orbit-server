@@ -8,3 +8,13 @@ module.exports.filterProps = function (collection, properties) {
     return result;
   }, {});
 };
+
+class HttpError {
+  constructor(message, status) {
+    this.message = message;
+    this.status = status;
+    this.name = "HttpError";
+  }
+};
+
+module.exports.HttpError = HttpError;

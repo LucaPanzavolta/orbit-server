@@ -51,11 +51,16 @@ mongoose.connect(mongodbUri, options)
 
 // CONNECTING TO LOCAL DATABASE
 const mongoose = require('mongoose');
+const Mockgoose = require('mockgoose').Mockgoose;
+const mockgoose = new Mockgoose(mongoose);
 
-mongoose.connect('mongodb://localhost/orbit-database')
-  .then(() => {
-    console.log('Connected to Orbits database');
-  })
-  .catch(err => {
-    console.log('Cannot connect, wrong path');
-  })
+// mockgoose.prepareStorage().then(function() {
+  // console.log('Preparing mockgoose wrapper for Mongoose.');
+  mongoose.connect('mongodb://localhost/orbit-database')
+    .then(() => {
+      console.log('Connected to Orbits database');
+    })
+    .catch(err => {
+      console.log('Cannot connect, wrong path');
+    });
+  // });

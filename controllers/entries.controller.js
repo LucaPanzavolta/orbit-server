@@ -1,4 +1,5 @@
 'use strict';
+const { HttpError } = require('./../services/utils');
 
 class EntriesController {
   constructor(UserModel, EntryModel) {
@@ -23,6 +24,7 @@ class EntriesController {
       ctx.body = { errors: ['Workspace not found!'] };
       return await next();
     }
+    // console.log('targetWorkspace', targetWorkspace);
     // Get Entries in this Workspace from DB
     let allEntries = await this.EntryModel.find({ _id: { $in: targetWorkspace.entries } });
     let sortedEntries = [];
@@ -30,7 +32,7 @@ class EntriesController {
     // For each Entry - sort Snapshot's by date
     for (let x = 0; x < allEntries.length; x++) {
       currentEntry = allEntries[x];
-      currentEntry.snapshots.sort((a, b) => a.date - b.date);
+      currentEntry.snapshots.sort((a, b) => new Date(a.date) - new Date(b.date));
       sortedEntries.push(currentEntry);
     }
     // Sort all Entries by name
@@ -58,12 +60,19 @@ class EntriesController {
 
     if (user.workspaces === undefined) user.workspaces = [];
     const targetWorkspace = await user.workspaces.find(el => el._id === ctx.params.workspace_id);
+    
+    if (!targetWorkspace) {
+      ctx.status = 400;
+      ctx.body = { errors: ['Workspace not found!'] };
+      // throw new HttpError(`Workspace not found!  -  addEntry()`, 400);
+      return await next();
+    }
     const entry = await this.EntryModel.create({
       name: ctx.request.body.name,
       workspace: ctx.params.workspace_id
     });
     // Add Entry to the Workspace
-    targetWorkspace.entries.push(entry._id)
+    targetWorkspace.entries.push(entry._id);
     await user.save();
     ctx.status = 201;
     ctx.body = entry;
@@ -72,22 +81,32 @@ class EntriesController {
   // Deleting an existing Entry
   async deleteEntry(ctx, next) {
 
+    if (!ctx.params.entryId || !ctx.params.workspace_id) {
+      ctx.status = 400;
+      ctx.body = { errors: ['Entry Id or Workspace Id not provided!'] };
+      return await next();
+    }
+
     // Consider to Refactor the below line to : `const user = ctx.user;`
     const user = await this.UserModel.findOne({ '_id': ctx.user._id });
 
-    if (user.workspaces === undefined) user.workspaces = [];
     const targetWorkspace = await user.workspaces.find(el => el._id == ctx.params.workspace_id);
 
     // If No Entry Found
-    if (targetWorkspace.entries.indexOf(ctx.params.entryId) === -1) {
+    let entryIndex = targetWorkspace.entries.findIndex( (obj) => {
+      return obj._id === ctx.params.entryId;
+    });
+    
+    if (entryIndex === -1) {
       ctx.status = 404;
       ctx.body = { errors: ['No entry found!'] };
       return await next();
     }
     // If Entry found - remove it 
     else {
-      targetWorkspace.entries.splice(targetWorkspace.entries.indexOf(ctx.params.entryId), 1);
+      targetWorkspace.entries.splice(entryIndex, 1);
       await user.save();
+      ctx.body = targetWorkspace.entries;
       ctx.status = 204;
     }
   }
