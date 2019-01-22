@@ -4,12 +4,15 @@ const authorize = require('./middlewares/authorize.js');
 const gate = require('./middlewares/gate');
 const db = require('./models/index').db;
 const CategoriesController = require('./controllers/categories.controller');
+const EntriesController = require('./controllers/entries.controller');
 
+//////////////  REACTORED FOR TESTING   ////////////////////////////
 const categoriesController = new CategoriesController(db.Category);
+const entriesController = new EntriesController(db.User, db.Entry);
+////////////////////////////////////////////////////////////////////
 
 const usersController = require('./controllers/users.controller');
 const workspacesController = require('./controllers/workspaces.controller');
-const entriesController = require('./controllers/entries.controller');
 const snapshotsController = require('./controllers/snapshots.controller');
 
 const router = require('koa-router')();
@@ -31,9 +34,9 @@ const routes = function (app) {
   router.delete('/dashboard/:id', authorize, gate, workspacesController.deleteWorkspace);
 
   // Entries
-  router.get('/dashboard/:id/', authorize, gate, entriesController.listEntriesByWorkspace); //OK
-  router.post('/dashboard/:id/', authorize, gate, entriesController.addEntry); //OK
-  router.delete('/dashboard/:id/:entryId', authorize, gate, entriesController.deleteEntry);
+  router.get('/dashboard/:workspace_id/', authorize, gate, entriesController.listEntriesByWorkspace);
+  router.post('/dashboard/:workspace_id/', authorize, gate, entriesController.addEntry);
+  router.delete('/dashboard/:workspace_id/:entryId', authorize, gate, entriesController.deleteEntry);
 
   // Snapshots
   router.post('/dashboard/:id/:entryId', authorize, gate, snapshotsController.addSnapshot);
