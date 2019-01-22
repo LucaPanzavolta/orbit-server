@@ -17,7 +17,7 @@ class EntriesController {
     const user = await this.UserModel.findOne({ _id: ctx.user._id });
 
     if (user.workspaces === undefined) user.workspaces = [];
-    const targetWorkspace = await user.workspaces.find(el => el._id === ctx.params.workspace_id);
+    const targetWorkspace = await user.workspaces.find(el => el._id == ctx.params.workspace_id);
     // If Workspace NOT found
     if (targetWorkspace === undefined) {
       ctx.status = 404;
@@ -49,6 +49,7 @@ class EntriesController {
 
   // Adding a new Entry
   async addEntry(ctx, next) {
+    console.log('IN', ctx.request.body);
     if (!ctx.request.body.name) {
       ctx.status = 400;
       ctx.body = { errors: ['Name cannot be empty!'] };
@@ -57,9 +58,11 @@ class EntriesController {
 
     // Consider to Refactor the below line to : `const user = ctx.user;`
     const user = await this.UserModel.findOne({ '_id': ctx.user._id });
+    console.log('ctx.params.workspace_id', ctx.params.workspace_id);
 
-    if (user.workspaces === undefined) user.workspaces = [];
-    const targetWorkspace = await user.workspaces.find(el => el._id === ctx.params.workspace_id);
+    console.log('USER', user);
+    const targetWorkspace = await user.workspaces.find((el) => el._id == ctx.params.workspace_id);
+    console.log('TARGET WORKSPACE', targetWorkspace);
     
     if (!targetWorkspace) {
       ctx.status = 400;
@@ -94,7 +97,7 @@ class EntriesController {
 
     // If No Entry Found
     let entryIndex = targetWorkspace.entries.findIndex( (obj) => {
-      return obj._id === ctx.params.entryId;
+      return obj._id == ctx.params.entryId;
     });
     
     if (entryIndex === -1) {

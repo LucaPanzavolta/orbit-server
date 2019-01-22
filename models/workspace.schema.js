@@ -11,6 +11,7 @@ const Workspace = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Entry'
   }],
+  metricLabels: [String]
 });
 
 module.exports = Workspace;
