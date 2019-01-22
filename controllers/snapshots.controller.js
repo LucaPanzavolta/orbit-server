@@ -10,46 +10,49 @@ module.exports.addSnapshot = async (ctx, next) => {
   if (!ctx.request.body.date || !ctx.request.body.metrics) {
     ctx.status = 404;
     ctx.body = {
-      errors:[
+      errors: [
         'Date and metrics are mandatory fields.'
       ]
     };
     return await next();
   }
-  const user = await User.findOne({'_id': ctx.user._id});
-  const categoryId = user.workspaces.filter( el => el._id == ctx.params.id)[0].category;
+  const user = await User.findOne({ '_id': ctx.user._id });
+  const test = user.workspaces.filter(el => el._id == ctx.params.id);
+  console.log('test', test);
+
+  const categoryId = user.workspaces.filter(el => el._id == ctx.params.id)[0].category;
   const category = await Category.findById(categoryId);
 
-  const targetEntry = await Entry.findOne({'_id': ctx.params.entryId});
+  const targetEntry = await Entry.findOne({ '_id': ctx.params.entryId });
   const snapshot = {
     date: ctx.request.body.date,
     comments: ctx.request.body.comments || "",
     metrics: ctx.request.body.metrics
   }
+
+  console.log('snapshot', snapshot);
   await targetEntry.snapshots.push(snapshot)
   await targetEntry.save();
   ctx.status = 201;
-  ctx.body = {
-    snapshot,
-  }
+  ctx.body = snapshot;
 }
 
 // Delete a snapshot
 module.exports.deleteSnapshot = async (ctx, next) => {
-  const targetEntry = await Entry.findOne({'_id': ctx.params.entryId});
+  const targetEntry = await Entry.findOne({ '_id': ctx.params.entryId });
   let newSnapshots = [];
   if (targetEntry) {
-    newSnapshots = await targetEntry.snapshots.filter( el => el._id != ctx.params.snapId);
+    newSnapshots = await targetEntry.snapshots.filter(el => el._id != ctx.params.snapId);
   }
   if (newSnapshots.length === targetEntry.snapshots.length) {
     ctx.status = 404;
     ctx.body = {
-      errors:[
+      errors: [
         'Snapshot not found!'
       ]
     };
     return await next();
   }
-  await Entry.findOneAndUpdate({'_id': ctx.params.entryId}, {snapshots: newSnapshots});
+  await Entry.findOneAndUpdate({ '_id': ctx.params.entryId }, { snapshots: newSnapshots });
   ctx.status = 204;
 }
