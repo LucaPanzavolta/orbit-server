@@ -13,11 +13,7 @@ const Workspace = new mongoose.Schema({
     ref: 'Entry'
   }],
   metricLabels: [String]
-<<<<<<< HEAD
-
-=======
   
->>>>>>> 1a5ea853c12c310ca02a8e50a1de8a488395bb54
 });
 
 module.exports = Workspace;

@@ -22,7 +22,6 @@ app.use(bodyParser());
 app.use(async (ctx, next) => {
   try {
     await next();
-<<<<<<< HEAD
   } catch (err) {
     ctx.body = undefined;
     switch (ctx.status) {
@@ -35,11 +34,6 @@ app.use(async (ctx, next) => {
         }
         ctx.app.emit('error', err, this);
     }
-=======
-  } catch (httpError) {
-    ctx.body = httpError.message;
-    ctx.status = httpError.status;
->>>>>>> 1a5ea853c12c310ca02a8e50a1de8a488395bb54
   }
 });
 

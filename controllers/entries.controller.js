@@ -58,19 +58,8 @@ class EntriesController {
     // Consider to Refactor the below line to : `const user = ctx.user;`
     const user = await this.UserModel.findOne({ '_id': ctx.user._id });
 
-<<<<<<< HEAD
     if (user.workspaces === undefined) user.workspaces = [];
     const targetWorkspace = await user.workspaces.find(el => el._id == ctx.params.workspace_id);
-=======
-    const targetWorkspace = await user.workspaces.find((el) => el._id == ctx.params.workspace_id);
-    
-    if (!targetWorkspace) {
-      ctx.status = 400;
-      ctx.body = { errors: ['Workspace not found!'] };
-      // throw new HttpError(`Workspace not found!  -  addEntry()`, 400);
-      return await next();
-    }
->>>>>>> 1a5ea853c12c310ca02a8e50a1de8a488395bb54
     const entry = await this.EntryModel.create({
       name: ctx.request.body.name,
       workspace: ctx.params.workspace_id
