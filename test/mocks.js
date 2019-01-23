@@ -1,12 +1,59 @@
-module.exports.User = {
-  findOne: function (params) {
-    let { _id } = params;
-    for (let user of this.users) {
-      if (user._id === _id) return user;
-      else return {};
-    }
-  },
+module.exports.correct = {
+  user_id: '11111',
+  workspace_id: 'wkspc1'
+};
 
+module.exports.false = {
+  workspace_id: 'falsewkspc1',
+  user_id: 'xxxxx'
+};
+
+module.exports.unsortedEntries = [
+  {
+    _id: '1',
+    name: 'Entry2',
+    snapshots: [ { date: "2019-01-17T00:00:00Z" } ]
+  },
+  {
+    _id: '2',
+    name: 'Entry1',
+    snapshots: [ { date: "2019-01-17T00:00:00Z" } ]
+  },
+];
+
+module.exports.unsortedSnapshots = [
+  { date: "2002-02-02T00:00:00Z" },
+  { date: "1991-01-01T00:00:00Z" },
+  { date: "2018-03-03T00:00:00Z" }
+];
+
+
+module.exports.user = {
+  _id: '11111',
+  name: 'User1',
+  email: 'user1@user1.com',
+  password: '********',
+  token: 'f28c4560-1a6c-11e9-9081-174d812cdb6f',
+  workspaces: [
+    { _id: this.correct.workspace_id, entries: [] }
+  ],
+  save: () => { this.user.saved = true },
+  saved: false
+};
+
+module.exports.workspaceWithEntries = {
+  _id: this.correct.workspace_id,
+  entries: [
+    {
+      _id: '1',
+      name: 'Entry-name',
+    }
+  ]
+};
+
+
+
+module.exports.User = {
   users: [
     {
       _id: '11111',
@@ -108,18 +155,7 @@ module.exports.User = {
 };
 
 module.exports.Entry = {
-  find: function (params) {
-    let idsArray = params._id.$in;
-    let result = [];
 
-    for (let wantedEntry_id of idsArray) {
-      this.entries.filter( entry => {
-        if (entry._id === wantedEntry_id) result.push(entry);
-      });
-    }
-    return result;
-  },
-  
   entries: [
     {
       _id: "entryid1111",
@@ -158,31 +194,22 @@ module.exports.Entry = {
       ],
     }
   ]
-}
-
-module.exports.correct = {
-  user_id: '11111',
-  workspace_id: 'wkspc1'
-}
-
-module.exports.false = {
-  workspace_id: 'falsewkspc1',
-  user_id: 'xxxxx'
-}
+};
 
 
 class ctx {
-  constructor (userId , workspaceId) {
+  constructor(userId, workspaceId) {
     this.user = {
-      _id: userId, 
+      _id: userId,
     };
     this.params = {
       workspace_id: workspaceId
+    };
+    this.request = {
+      body: {}
     }
   }
 };
 
 module.exports.ctx = ctx;
-module.exports.next = () => {
-  return; 
-};
+module.exports.next = () => { };

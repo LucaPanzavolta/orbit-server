@@ -27,14 +27,23 @@ module.exports.addSnapshot = async (ctx, next) => {
   const targetEntry = await Entry.findOne({ '_id': ctx.params.entryId });
   console.log('TARGET ENTRY ', targetEntry);
 
+<<<<<<< HEAD
+=======
+  const targetEntry = await Entry.findOne({'_id': ctx.params.entryId});
+
+>>>>>>> 1a5ea853c12c310ca02a8e50a1de8a488395bb54
   const snapshot = {
     date: ctx.request.body.date,
     comment: ctx.request.body.comment || "",
     label: ctx.request.body.label,
     score: ctx.request.body.score
   }
+<<<<<<< HEAD
 
   console.log('snapshot', snapshot);
+=======
+  
+>>>>>>> 1a5ea853c12c310ca02a8e50a1de8a488395bb54
   await targetEntry.snapshots.push(snapshot)
   await targetEntry.save();
   ctx.status = 201;
