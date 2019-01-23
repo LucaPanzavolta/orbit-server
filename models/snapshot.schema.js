@@ -5,7 +5,8 @@ const Skill = require('./skill.model')
 const Snapshot = new mongoose.Schema({
   date: Date,
   comments: [String],
-  metrics: Array
+  label: String, //changed
+  score: Number  //changed
 });
 
 module.exports = Snapshot;

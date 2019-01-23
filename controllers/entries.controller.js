@@ -16,7 +16,7 @@ class EntriesController {
     const user = await this.UserModel.findOne({ _id: ctx.user._id });
 
     if (user.workspaces === undefined) user.workspaces = [];
-    const targetWorkspace = await user.workspaces.find(el => el._id === ctx.params.workspace_id);
+    const targetWorkspace = await user.workspaces.find(el => el._id == ctx.params.workspace_id);
     // If Workspace NOT found
     if (targetWorkspace === undefined) {
       ctx.status = 404;
@@ -57,7 +57,7 @@ class EntriesController {
     const user = await this.UserModel.findOne({ '_id': ctx.user._id });
 
     if (user.workspaces === undefined) user.workspaces = [];
-    const targetWorkspace = await user.workspaces.find(el => el._id === ctx.params.workspace_id);
+    const targetWorkspace = await user.workspaces.find(el => el._id == ctx.params.workspace_id);
     const entry = await this.EntryModel.create({
       name: ctx.request.body.name,
       workspace: ctx.params.workspace_id

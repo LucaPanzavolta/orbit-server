@@ -20,7 +20,6 @@ app.use(cors());
 app.use(bodyParser());
 
 app.use(async (ctx, next) => {
-  console.log('headers are ', ctx.request.headers);
   try {
     await next();
   } catch (err) {

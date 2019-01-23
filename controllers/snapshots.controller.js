@@ -6,12 +6,13 @@ const Category = require('../models/category.model');
 
 // Add a new snapshot
 module.exports.addSnapshot = async (ctx, next) => {
+  console.log('CTX.REQ.BODY ', ctx.request.body);
   if ('POST' != ctx.method) return await next();
-  if (!ctx.request.body.date || !ctx.request.body.metrics) {
+  if (!ctx.request.body.date || !ctx.request.body.score || !ctx.request.body.label) {
     ctx.status = 404;
     ctx.body = {
       errors: [
-        'Date and metrics are mandatory fields.'
+        'Date, label and score are mandatory fields'
       ]
     };
     return await next();
@@ -20,14 +21,17 @@ module.exports.addSnapshot = async (ctx, next) => {
   const test = user.workspaces.filter(el => el._id == ctx.params.id);
   console.log('test', test);
 
-  const categoryId = user.workspaces.filter(el => el._id == ctx.params.id)[0].category;
-  const category = await Category.findById(categoryId);
+  //const categoryId = user.workspaces.filter(el => el._id == ctx.params.id)[0].category;
+  // const category = await Category.findById(categoryId);
 
   const targetEntry = await Entry.findOne({ '_id': ctx.params.entryId });
+  console.log('TARGET ENTRY ', targetEntry);
+
   const snapshot = {
     date: ctx.request.body.date,
-    comments: ctx.request.body.comments || "",
-    metrics: ctx.request.body.metrics
+    comment: ctx.request.body.comment || "",
+    label: ctx.request.body.label,
+    score: ctx.request.body.score
   }
 
   console.log('snapshot', snapshot);

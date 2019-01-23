@@ -1,16 +1,19 @@
 const mongoose = require('mongoose');
 
+
 const Workspace = new mongoose.Schema({
-	name: String,
-	template: Object,
-	category: {
+  name: String,
+  template: Object,
+  category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category'
   },
-	entries: [{
+  entries: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Entry'
   }],
+  metricLabels: [String]
+
 });
 
 module.exports = Workspace;
