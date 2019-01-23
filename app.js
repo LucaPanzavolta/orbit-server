@@ -23,7 +23,6 @@ app.use(async (ctx, next) => {
   try {
     await next();
   } catch (httpError) {
-    console.log('E R R O R', httpError);
     ctx.body = httpError.message;
     ctx.status = httpError.status;
   }
@@ -36,8 +35,8 @@ app.use(compress());
 
 // Run server
 if (!module.parent) {
-  const ip = process.env.ip || 'localhost';
-  const port = process.env.port || 3000;
+  const ip =  'localhost';
+  const port = 3000;
   app.listen(port);
   console.log(`Orbits server running at http://${ip}:${port}`);
 }
