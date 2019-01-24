@@ -1,6 +1,7 @@
 module.exports.correct = {
   user_id: '11111',
-  workspace_id: 'wkspc1'
+  workspace_id: 'wkspc1',
+  entry_id: '5c4749e29b818168f57ec74b?c'
 };
 
 module.exports.false = {
@@ -8,16 +9,24 @@ module.exports.false = {
   user_id: 'xxxxx'
 };
 
+module.exports.sigleEntry = {
+  _id: '5c4749e29b818168f57ec74b',
+  name: 'Tom Cruise',
+  workspace: '5c4748979b818168f57ec74a',
+  snapshots: [],
+  __v: 21
+}
+
 module.exports.unsortedEntries = [
   {
     _id: '1',
     name: 'Entry2',
-    snapshots: [ { date: "2019-01-17T00:00:00Z" } ]
+    snapshots: [{ date: "2019-01-17T00:00:00Z" }]
   },
   {
     _id: '2',
     name: 'Entry1',
-    snapshots: [ { date: "2019-01-17T00:00:00Z" } ]
+    snapshots: [{ date: "2019-01-17T00:00:00Z" }]
   },
 ];
 
@@ -198,16 +207,17 @@ module.exports.Entry = {
 
 
 class ctx {
-  constructor(userId, workspaceId) {
+  constructor(userId, workspaceId, entryId) {
     this.user = {
       _id: userId,
     };
     this.params = {
-      workspace_id: workspaceId
+      workspace_id: workspaceId,
+      entryId: entryId
     };
     this.request = {
       body: {}
-    }
+    };
   }
 };
 

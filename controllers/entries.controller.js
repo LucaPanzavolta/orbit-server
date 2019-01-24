@@ -9,7 +9,7 @@ class EntriesController {
     this.addEntry = this.addEntry.bind(this);
     this.deleteEntry = this.deleteEntry.bind(this);
   }
-  
+
   // Get all Entries in a Workspace
   async listEntriesByWorkspace(ctx, next) {
 
@@ -52,23 +52,30 @@ class EntriesController {
     if (!ctx.request.body.name) {
       ctx.status = 400;
       ctx.body = { errors: ['Name cannot be empty!'] };
-      return await next();
+      //return await next();
+    } else {
+
+      // Consider to Refactor the below line to : `const user = ctx.user;`
+      const user = await this.UserModel.findOne({ '_id': ctx.user._id });
+
+      //if (user.workspaces === undefined) user.workspaces = [];
+      const targetWorkspace = await user.workspaces.find(el => el._id == ctx.params.workspace_id);
+
+      if (!targetWorkspace) {
+        ctx.status = 400;
+        ctx.body = { errors: ['Workspace ID is either wrong or not provided'] };
+      } else {
+        const entry = await this.EntryModel.create({
+          name: ctx.request.body.name,
+          workspace: ctx.params.workspace_id
+        });
+        // Add Entry to the Workspace
+        targetWorkspace.entries.push(entry._id);
+        await user.save();
+        ctx.status = 201;
+        ctx.body = entry;
+      }
     }
-
-    // Consider to Refactor the below line to : `const user = ctx.user;`
-    const user = await this.UserModel.findOne({ '_id': ctx.user._id });
-
-    if (user.workspaces === undefined) user.workspaces = [];
-    const targetWorkspace = await user.workspaces.find(el => el._id == ctx.params.workspace_id);
-    const entry = await this.EntryModel.create({
-      name: ctx.request.body.name,
-      workspace: ctx.params.workspace_id
-    });
-    // Add Entry to the Workspace
-    targetWorkspace.entries.push(entry._id);
-    await user.save();
-    ctx.status = 201;
-    ctx.body = entry;
   }
 
   // Deleting an existing Entry
@@ -86,10 +93,10 @@ class EntriesController {
     const targetWorkspace = await user.workspaces.find(el => el._id == ctx.params.workspace_id);
 
     // If No Entry Found
-    let entryIndex = targetWorkspace.entries.findIndex( (obj) => {
+    let entryIndex = targetWorkspace.entries.findIndex((obj) => {
       return obj._id == ctx.params.entryId;
     });
-    
+
     if (entryIndex === -1) {
       ctx.status = 404;
       ctx.body = { errors: ['No entry found!'] };

@@ -5,15 +5,16 @@ const gate = require('./middlewares/gate');
 const db = require('./models/index').db;
 const CategoriesController = require('./controllers/categories.controller');
 const EntriesController = require('./controllers/entries.controller');
+const SnapshotsController = require('./controllers/snapshots.controller');
 
 //////////////  REACTORED FOR TESTING   ////////////////////////////
 const categoriesController = new CategoriesController(db.Category);
 const entriesController = new EntriesController(db.User, db.Entry);
+const snapshotsController = SnapshotsController(db.Entry);
 ////////////////////////////////////////////////////////////////////
 
 const usersController = require('./controllers/users.controller');
 const workspacesController = require('./controllers/workspaces.controller');
-const snapshotsController = require('./controllers/snapshots.controller');
 
 const router = require('koa-router')();
 
