@@ -1,47 +1,35 @@
-<div align="center">
- <img width="200" height="200" src="https://github.com/cjjenkinson/orbit/blob/develop/src/assets/images/orbit_logo%402x.png"></img>
-</div>
+# Orbit
 
-# Orbit-server
+## What is Orbit?
+Orbit-server is the back-end for [Orbit](https://github.com/LucaPanzavolta/Orbit-FE) , an open-source data visualisation tool that allows businesses, sports teams and educational institutions track, measure and improve performance. Built using cutting-edge technologies, Orbit provides a birds-eye-view on performance metrics in a way that is easy to understand and digest. Students, players and employees are presented with key changes they can make to improve the performance through a complex neural networks, helping users focus their time more effectively and efficiently.
 
-Orbit-server is the back-end for [Orbit](https://github.com/cjjenkinson/orbit) , an open-source data visualisation tool that allows businesses, sports teams and educational institutions track, measure and improve performance. Built using cutting-edge technologies, Orbit provides a birds-eye-view on performance metrics in a way that is easy to understand and digest. Students, players and employees are presented with key changes they can make to improve the performance through a complex neural networks, helping users focus their time more effectively and efficiently.
+## Tech Stack
 
-## Tech Stack:
+### Front-end: [Orbit-FE](https://github.com/LucaPanzavolta/Orbit-FE)
+* [Angular](https://angular.io/)
+* [RxJS](https://rxjs-dev.firebaseapp.com/)
+* [Chart.js](https://www.chartjs.org/)
+* [Angular Material](https://material.angular.io/)
 
-### Front-end:
+### Back-end
 
-- React
-- Redux
-- Webpack
-- D3.js
-- VX.js
-- PostCSS
+* [Node.js](https://nodejs.org/en/)
+* [Koa](https://koajs.com/)
+* [MongoDB](https://www.mongodb.com/)
+* [Mongoose](https://mongoosejs.com/)
+* [Heroku](https://www.heroku.com/)
 
-### Back-end: 
+## Screenshots
+![homepage](Screenshots/homepage.png)
+![product detail](Screenshots/workspaces.png)
+![entries](Screenshots/entries.png)
 
-- Koa
-- MongoDB
-- MongoLab
-- Travis CI
-- Heroku
+# Getting started
+After cloning the repo you'll have to install the dependencies with:
 
+`npm install`
 
-
-
-# Using Orbit-server
-
-A few things you have to take in consideration before using Orbit-server
-
-After cloning the repo you'll have to :
-
-### Install global and local dependancies:
-
-* NPM
-
-
-* Node
-
-## Two options using the database
+## Database setup
 
 ### 1. You use an online database
 
@@ -96,3 +84,11 @@ In the shell type:
 Use this link to get all requests: [Orbit end-points](https://www.getpostman.com/collections/ac2fd74513927f01fa8f).
 
 Don't forget to create a new Environment (http://localhost:3000).
+
+## Contributors
+* Uros C - [ross-u](https://github.com/ross-u)
+* Luca Panzavolta - [LucaPanzavolta](https://github.com/LucaPanzavolta)
+
+As this is a 100% open source project all contributions and pull requests will be highly welcomed!
+
+

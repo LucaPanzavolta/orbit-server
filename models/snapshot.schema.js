@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 
-const Skill = require('./skill.model')
+const Metric = require('./metric.schema')
 
 const Snapshot = new mongoose.Schema({
   date: Date,
   comments: [String],
-  enablers: Array
+  label: String, //changed
+  score: Number  //changed
 });
 
 module.exports = Snapshot;

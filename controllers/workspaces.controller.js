@@ -23,50 +23,52 @@ module.exports.addWorkspace = async (ctx, next) => {
   if (!ctx.request.body.name) {
     ctx.status = 400;
     ctx.body = {
-      errors:[
+      errors: [
         'Workspace name cannot be empty!'
       ]
     };
     return await next();
   }
 
+  console.log('ctx.body', ctx.request.body);
   const workspace = {
     name: ctx.request.body.name,
-    template: ctx.request.body.template
+    template: ctx.request.body.template,
+    metricLabels: ctx.request.body.metricLabels
   };
 
   if (ctx.user.workspaces.some((el) => el.name === ctx.request.body.name)) {
     ctx.status = 401;
     ctx.body = {
-      errors:[
+      errors: [
         'Workspace already exists.'
       ]
     };
     return await next();
   }
 
-  await User.findOneAndUpdate({'_id': ctx.user._id}, {
+  await User.findOneAndUpdate({ '_id': ctx.user._id }, {
     $push: { workspaces: workspace }
   });
 
-  ctx.user = await User.findOne({'_id': ctx.user._id});
+  ctx.user = await User.findOne({ '_id': ctx.user._id });
   ctx.status = 200;
   ctx.body = ctx.user.workspaces.pop();
 };
 
 // Deleting an existing workspace
 module.exports.deleteWorkspace = async (ctx, next) => {
-  const user = await User.findOne({'_id': ctx.user._id});
-  const newWorkspaces = await user.workspaces.filter( el => el._id != ctx.params.id);
+  const user = await User.findOne({ '_id': ctx.user._id });
+  const newWorkspaces = await user.workspaces.filter(el => el._id != ctx.params.id);
   if (newWorkspaces.length === user.workspaces.length) {
     ctx.status = 404;
     ctx.body = {
-      errors:[
+      errors: [
         'Workspace doesn\'t exists.'
       ]
     };
     return await next();
   }
-  ctx.user = await User.findOneAndUpdate({'_id': ctx.user._id}, {workspaces: newWorkspaces});
+  ctx.user = await User.findOneAndUpdate({ '_id': ctx.user._id }, { workspaces: newWorkspaces });
   ctx.status = 204;
 }

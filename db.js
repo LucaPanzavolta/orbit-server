@@ -1,6 +1,6 @@
 // CONNECTING TO mLab DATABASE
-require('dotenv').config();
-const mongoose = require('mongoose');
+/* const mongoose = require('mongoose');
+ */require('dotenv').config();
 
 /*
  * Mongoose by default sets the auto_reconnect option to true.
@@ -9,7 +9,30 @@ const mongoose = require('mongoose');
  * plenty of time in most operating environments.
  */
 
-// OPTIONS FOR CONNECTION TO mLab DATABASE
+/* const options = {
+  server: {
+    socketOptions: {
+      keepAlive: 300000,
+      connectTimeoutMS: 30000
+    }
+  },
+  replset: {
+    socketOptions: {
+      keepAlive: 300000,
+      connectTimeoutMS: 30000
+    }
+  }
+};
+
+const mongodbUri = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
+
+mongoose.connect(mongodbUri, options)
+  .then(() => {
+    console.log('Connected to Orbits database');
+  })
+  .catch(err => {
+    console.log('Connection error', err);
+  }) */
 
 // const options = {
 //   server: {
@@ -26,23 +49,18 @@ const mongoose = require('mongoose');
 //   }
 // };
 
-// const mongodbUri = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
-
-// mongoose.connect(mongodbUri, options)
-//   .then(() => {
-//     console.log('Connected to Orbits database');
-//   })
-//   .catch(err => {
-//     console.log('Connection error', err);
-//   })
-
-
-
 // CONNECTING TO LOCAL DATABASE
-mongoose.connect('mongodb://localhost/orbit-database')
-  .then(() => {
-    console.log('Connected to Orbits database');
-  })
-  .catch(err => {
-    console.log('Cannot connect, wrong path');
-  })
+const mongoose = require('mongoose');
+const Mockgoose = require('mockgoose').Mockgoose;
+const mockgoose = new Mockgoose(mongoose);
+
+// mockgoose.prepareStorage().then(function() {
+  // console.log('Preparing mockgoose wrapper for Mongoose.');
+  mongoose.connect('mongodb://localhost/orbit-database')
+    .then(() => {
+      console.log('Connected to Orbits database');
+    })
+    .catch(err => {
+      console.log('Cannot connect, wrong path');
+    });
+  // });

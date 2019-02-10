@@ -5,7 +5,10 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
@@ -30,18 +33,17 @@
     "koa-route": "^3.2.0",
     "koa-router": "^7.4.0",
     "lodash": "^4.17.5",
-    "mongoose": "^5.0.10",
+    "mongoose": "^5.4.5",
     "nodemon": "^1.17.2",
     "uuid": "^3.2.1",
     "validator": "^9.4.1"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
     "eslint": "^4.10.0",
     "eslint-plugin-json": "^1.2.0",
-    "mocha": "^2.5.3",
-    "request": "^2.88.0",
-    "supertest": "^2.0.0"
+    "jest": "^23.6.0",
+    "mockgoose": "^8.0.1",
+    "supertest": "^2.0.1"
   },
   "engines": {
     "node": "6.4.0",

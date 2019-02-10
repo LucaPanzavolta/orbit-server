@@ -1,79 +1,115 @@
 'use strict';
+const { HttpError } = require('./../services/utils');
 
-const User = require('../models/user.model');
-const Entry = require('../models/entry.model');
+class EntriesController {
+  constructor(UserModel, EntryModel) {
+    this.UserModel = UserModel;
+    this.EntryModel = EntryModel;
+    this.listEntriesByWorkspace = this.listEntriesByWorkspace.bind(this);
+    this.addEntry = this.addEntry.bind(this);
+    this.deleteEntry = this.deleteEntry.bind(this);
+  }
 
-// Get all Entries
-module.exports.listEntries = async (ctx, next) => {
-  if ('GET' != ctx.method) return await next();
-  const user = await User.findOne({'_id': ctx.user._id});
-  const targetWorkspace = await user.workspaces.filter( el => el._id == ctx.params.id);
-  if (targetWorkspace.length == 0) {
-    ctx.status = 404;
-    ctx.body = {
-      errors:[
-        'Workspace not found!'
-      ]
-    };
-    return await next();
+  // Get all Entries in a Workspace
+  async listEntriesByWorkspace(ctx, next) {
+
+    // Consider to Refactor the below line to : `const user = ctx.user;`
+    const user = await this.UserModel.findOne({ _id: ctx.user._id });
+
+    if (user.workspaces === undefined) user.workspaces = [];
+    const targetWorkspace = await user.workspaces.find(el => el._id == ctx.params.workspace_id);
+    // If Workspace NOT found
+    if (targetWorkspace === undefined) {
+      ctx.status = 404;
+      ctx.body = { errors: ['Workspace not found!'] };
+      return await next();
+    }
+    // console.log('targetWorkspace', targetWorkspace);
+    // Get Entries in this Workspace from DB
+    let allEntries = await this.EntryModel.find({ _id: { $in: targetWorkspace.entries } });
+    let sortedEntries = [];
+    let currentEntry;
+    // For each Entry - sort Snapshot's by date
+    for (let x = 0; x < allEntries.length; x++) {
+      currentEntry = allEntries[x];
+      currentEntry.snapshots.sort((a, b) => new Date(a.date) - new Date(b.date));
+      sortedEntries.push(currentEntry);
+    }
+    // Sort all Entries by name
+    sortedEntries.sort((a, b) => {
+      const A = a.name.toUpperCase();
+      const B = b.name.toUpperCase();
+      if (A < B) return -1;
+      if (A > B) return 1;
+      return 0;
+    });
+    ctx.status = 200;
+    ctx.body = sortedEntries;
   }
-  let allEntries = [];
-  let current;
-  for (let x = 0; x < targetWorkspace[0].entries.length; x++) {
-    current = await Entry.findOne({'_id': targetWorkspace[0].entries[x]})
-    current.snapshots.sort((a,b) => a.date - b.date);
-    await allEntries.push(current)
+
+  // Adding a new Entry
+  async addEntry(ctx, next) {
+    if (!ctx.request.body.name) {
+      ctx.status = 400;
+      ctx.body = { errors: ['Name cannot be empty!'] };
+      //return await next();
+    } else {
+
+      // Consider to Refactor the below line to : `const user = ctx.user;`
+      const user = await this.UserModel.findOne({ '_id': ctx.user._id });
+
+      //if (user.workspaces === undefined) user.workspaces = [];
+      const targetWorkspace = await user.workspaces.find(el => el._id == ctx.params.workspace_id);
+
+      if (!targetWorkspace) {
+        ctx.status = 400;
+        ctx.body = { errors: ['Workspace ID is either wrong or not provided'] };
+      } else {
+        const entry = await this.EntryModel.create({
+          name: ctx.request.body.name,
+          workspace: ctx.params.workspace_id
+        });
+        // Add Entry to the Workspace
+        targetWorkspace.entries.push(entry._id);
+        await user.save();
+        ctx.status = 201;
+        ctx.body = entry;
+      }
+    }
   }
-  allEntries.sort((a,b) => {
-    const A = a.name.toUpperCase();
-    const B = b.name.toUpperCase();
-    if (A < B) return -1;
-    if (A > B) return 1;
-    return 0;
-  });
-  ctx.status = 200;
-  ctx.body = allEntries;
+
+  // Deleting an existing Entry
+  async deleteEntry(ctx, next) {
+
+    if (!ctx.params.entryId || !ctx.params.workspace_id) {
+      ctx.status = 400;
+      ctx.body = { errors: ['Entry Id or Workspace Id not provided!'] };
+      return await next();
+    }
+
+    // Consider to Refactor the below line to : `const user = ctx.user;`
+    const user = await this.UserModel.findOne({ '_id': ctx.user._id });
+
+    const targetWorkspace = await user.workspaces.find(el => el._id == ctx.params.workspace_id);
+
+    // If No Entry Found
+    let entryIndex = targetWorkspace.entries.findIndex((obj) => {
+      return obj._id == ctx.params.entryId;
+    });
+
+    if (entryIndex === -1) {
+      ctx.status = 404;
+      ctx.body = { errors: ['No entry found!'] };
+      return await next();
+    }
+    // If Entry found - remove it 
+    else {
+      targetWorkspace.entries.splice(entryIndex, 1);
+      await user.save();
+      ctx.body = targetWorkspace.entries;
+      ctx.status = 204;
+    }
+  }
 };
 
-// Adding a new Entry
-module.exports.addEntry = async (ctx, next) => {
-  if ('POST' != ctx.method) return await next();
-  if (!ctx.request.body.name) {
-    ctx.status = 400;
-    ctx.body = {
-      errors:[
-        'Name cannot be empty!'
-      ]
-    };
-    return await next();
-  }
-  const user = await User.findOne({'_id': ctx.user._id});
-  const targetWorkspace = await user.workspaces.filter( el => el._id == ctx.params.id);
-  const entry = await Entry.create({
-    name: ctx.request.body.name,
-    workspace: ctx.params.id
-  });
-  targetWorkspace[0].entries.push(entry._id)
-  await user.save();
-  ctx.status = 201;
-  ctx.body = entry;
-};
-
-// Deleting an existing Entry
-module.exports.deleteEntry = async (ctx, next) => {
-  if ('DELETE' != ctx.method) return await next();
-  const user = await User.findOne({'_id': ctx.user._id});
-  const targetWorkspace = await user.workspaces.filter( el => el._id == ctx.params.id);
-  if (targetWorkspace[0].entries.indexOf(ctx.params.entryId) === -1) {
-    ctx.status = 404;
-    ctx.body = {
-      errors:[
-        'No entry found!'
-      ]
-    };
-    return await next();
-  }
-  targetWorkspace[0].entries.splice(targetWorkspace[0].entries.indexOf(ctx.params.entryId),1);
-  await user.save();
-  ctx.status = 204;
-}
+module.exports = EntriesController;
