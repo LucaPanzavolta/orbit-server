@@ -86,8 +86,9 @@ Use this link to get all requests: [Orbit end-points](https://www.getpostman.com
 Don't forget to create a new Environment (http://localhost:3000).
 
 ## Contributors
-* Uros C - [ross-u](https://github.com/ross-u)
-* Luca Panzavolta - [LucaPanzavolta](https://github.com/LucaPanzavolta)
+* Luca Panzavolta - [LucaPanzavolta](https://github.com/LucaPanzavolta) - [Linkedin](https://www.linkedin.com/in/lucapanzavolta)
+* Uros C - [ross-u](https://github.com/ross-u) - [Linkedin](https://www.linkedin.com/in/uros-cirkovic)
+* Based on a fork from [cjjenkinson](https://github.com/cjjenkinson)
 
 As this is a 100% open source project all contributions and pull requests will be highly welcomed!
 
